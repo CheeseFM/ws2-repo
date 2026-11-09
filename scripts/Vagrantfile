@@ -108,8 +108,16 @@ Vagrant.configure("2") do |config|
     client.vm.box = "gusztavvargadr/windows-11-25h2-enterprise"
     client.vm.box_version = "2607.1.0"
     client.vm.network "private_network", ip: "192.168.26.40", auto_config: false
+
+    # RSAT eerst: heeft enkel internet nodig, niet het domein (Windows Update duurt lang)
+    client.vm.provision "rsat", type: "shell", inline: "C:\\vagrant\\client\\01-rsat.ps1"
+    
     # Set the host name via script
     client.vm.provision "base", type: "shell", inline: "C:\\vagrant\\common\\base.ps1 -Node client", reboot: true
+
+    # Domein
+    client.vm.provision "join", type: "shell", inline: "C:\\vagrant\\common\\join-domain.ps1 -Node client", reboot: true
+
     client.vm.provider "virtualbox" do |vb|
       vb.name = "client"
       vb.customize ["modifyvm", :id, "--groups", "/WS2"]

@@ -75,4 +75,15 @@
         Port = 80
     }
 
+    # RSAT tools op de client (client\01-rsat.ps1), enkel wat nodig is
+    Client = @{
+        RsatTools = @(
+            'Rsat.ActiveDirectory.DS-LDS.Tools'      # Users and Computers + AD PowerShell
+            'Rsat.Dns.Tools'                         # DNS Manager
+            'Rsat.DHCP.Tools'                        # DHCP console
+            'Rsat.CertificateServices.Tools'         # Certification Authority console
+            'Rsat.GroupPolicy.Management.Tools'      # Group Policy Management
+        )
+    }
+
 }

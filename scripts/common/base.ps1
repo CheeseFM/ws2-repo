@@ -1,12 +1,11 @@
 
 # Vraagt welke server er moet afgehaald worden uit config
 # https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced_parameters?view=powershell-7.6
-$ErrorActionPreference = 'Stop' # Stoppen bij fout
-
 param(
     [Parameter(Mandatory)]
     [string]$Node
 )
+$ErrorActionPreference = 'Stop' # Stoppen bij fout (na param: param moet de eerste regel code zijn)
 
 # Laadt bestand in line in script zodat ze beschikbaar is in sessie
 # https://medium.com/@abshuemail/dot-sourcing-in-powershell-e12046ad6e10
@@ -85,7 +84,6 @@ else { # False -> er is GEEN IP ingesteld, bv. 'IP = $null'
 
     # DHCP Lease hernieuwen, geen output
     ipconfig /renew Host-Only | Out-Null
-
 }
 
 # Zet NAT lagere metric voor fixen probleem met DNS servers + zet uit dat nieuwe DNS geregistreerd wordt op NAT

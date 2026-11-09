@@ -174,15 +174,15 @@ Hierbij hoort ook telkens het documenteren van deze stappen (screenshots + probl
 	- [x] DHCP geen DNS-records laten registreren voor clients
 
 ## Client - [[#Management tools|RSAT tools]]
-- [ ] Host-only adapter op DHCP, controleren dat IP in `.100 - .150` valt
-- [ ] DNS-registratie uitschakelen op beide adapters*
-- [ ] Toevoegen aan domein en rebooten
-- [ ] Enkel de nodige RSAT tools installeren:*
-	- [ ] Active Directory
-	- [ ] DNS
-	- [ ] DHCP
-	- [ ] Certificate Services
-	- [ ] Group Policy Management
+- [x] Host-only adapter op DHCP, controleren dat IP in `.100 - .150` valt
+- [x] DNS-registratie uitschakelen op beide adapters*
+- [x] Toevoegen aan domein en rebooten
+- [x] Enkel de nodige RSAT tools installeren:*
+	- [x] Active Directory
+	- [x] DNS
+	- [x] DHCP
+	- [x] Certificate Services
+	- [x] Group Policy Management
 - [ ] Controleren dat het CA-certificaat vertrouwd wordt
 
 ## Firewall
@@ -190,12 +190,12 @@ Hierbij hoort ook telkens het documenteren van deze stappen (screenshots + probl
 - [ ] WinRM openlaten, anders verliest Vagrant de verbinding
 - [ ] Lijst opstellen en motiveren in readme:
 
-| Server  | Toegelaten inkomend (regelgroepen)                                                                     |
-| ------- | ------------------------------------------------------------------------------------------------------ |
-| Alle    | Windows Remote Management, Core Networking (DHCP-client op NAT, IPv6), OpenSSH Server, ping (eigen regel) |
+| Server  | Toegelaten inkomend (regelgroepen)                                                                                               |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Alle    | Windows Remote Management, Core Networking (DHCP-client op NAT, IPv6), OpenSSH Server, ping (eigen regel)                        |
 | server1 | Active Directory Domain Services (LDAP, GC, RPC, SMB 445 voor SYSVOL, W32Time), AD Web Services, Kerberos KDC, DNS Service, HTTP |
-| server2 | DNS Service (53 + RPC voor beheer)                                                                    |
-| server3 | DHCP Server, DHCP Server Management (RPC console), Certification Authority (DCOM/RPC), HTTP (CertSrv) |
+| server2 | DNS Service (53 + RPC voor beheer)                                                                                               |
+| server3 | DHCP Server, DHCP Server Management (RPC console), Certification Authority (DCOM/RPC), HTTP (CertSrv)                            |
 
 - [ ] Waar mogelijk ingebouwde regelgroepen gebruiken
 - [ ] Testen dat alles werkt met firewall aan*
