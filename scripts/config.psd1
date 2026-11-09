@@ -10,12 +10,11 @@
     }
 
     Network = @{
-        # Host-only network. VirtualBox DHCP on this network must be disabled.
+        # Host-only network
         NetworkId    = '192.168.26.0'
         PrefixLength = 24
-        # No default gateway on the host-only adapter: internet goes via NAT.
 
-        # VirtualBox NAT always hands out 10.0.2.x; used to tell the adapters apart.
+        # VirtualBox NAT always geeft ons 10.0.2.x;
         NatSubnet    = '10.0.2.*'
     }
 
@@ -35,8 +34,18 @@
         }
         client = @{
             Hostname = 'client'
-            IP       = $null    # dynamic, via DHCP on server3
+            IP       = $null    # dynamic, via DHCP op server3
         }
+    }
+
+    Dns = @{
+        PrimaryNode   = 'server1'
+        SecondaryNode = 'server2'
+        ReverseZone   = '26.168.192.in-addr.arpa'
+        Forwarders    = @()
+        Records = @(
+            @{ Name = 'intranet'; Type = 'CNAME'; Target = 'ad-web-dns' }
+        )
     }
 
 }

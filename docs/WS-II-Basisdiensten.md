@@ -106,7 +106,7 @@ Hierbij hoort ook telkens het documenteren van deze stappen (screenshots + probl
 - [x] VirtualBox DHCP-server op het host-only netwerk **uitschakelen**
 - [x] Mappenstructuur `scripts/` opzetten:
 	- [x] Vagrantfile
-	- [ ] Centraal configbestand (domeinnaam, IP's, wachtwoorden op één plek)
+	- [x] Centraal configbestand (domeinnaam, IP's, wachtwoorden op één plek)
 	- [x] Apart bestand voor OU's en gebruikers (eenvoudig aanpasbaar)
 	- [ ] Map met gedeelde functies (IP instellen, hostname, firewall)
 	- [ ] Map per VM (server1, server2, server3, client)
@@ -118,7 +118,7 @@ Hierbij hoort ook telkens het documenteren van deze stappen (screenshots + probl
 
 ## Gemeenschappelijk (elke server)
 - [ ] Hostname instellen
-- [ ] Host-only adapter identificeren op basis van IP/MAC, niet op naam
+- [x] Host-only adapter identificeren op basis van IP/MAC, niet op naam
 - [ ] Vast IP instellen, **zonder default gateway** op host-only (anders conflict met NAT)
 - [ ] DNS-servers van host-only adapter instellen
 - [ ] NAT-adapter niet laten registreren in DNS
