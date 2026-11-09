@@ -3,11 +3,13 @@
 # Oplossing: Vagrant draait een scheduled task om na promotie script uit te voeren
 # https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/?view=windowsserver2025-ps
 # -> Hiervoor functie Promote
-$ErrorActionPreference = 'Stop' # Stoppen bij fout
 
+# param moet altijd het eerste statement van een script zijn
 param(
     [switch]$Promote
 )
+
+$ErrorActionPreference = 'Stop' # Stoppen bij fout
 
 # Configuratiebestand inladen
 . "$PSScriptRoot\..\common\config.ps1"

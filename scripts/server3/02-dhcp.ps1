@@ -17,6 +17,12 @@ $dns     = $cfg.Nodes[$cfg.Dns.PrimaryNode].IP, $cfg.Nodes[$cfg.Dns.SecondaryNod
 # Start
 Write-Host "[X] DHCP wordt geconfigureerd ($($dhcp.StartRange) - $($dhcp.EndRange))"
 
+# Installeren van DHCP indien nodig (EERST: anders bestaat de DHCPServer service nog niet)
+if (-not (Get-WindowsFeature DHCP).Installed) {
+    Write-Host 'Installing DHCP role'
+    Install-WindowsFeature DHCP -IncludeManagementTools | Out-Null
+}
+
 # Security groups configureren
 # https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-groups
 if (-not (Get-LocalGroup 'DHCP Administrators' -ErrorAction SilentlyContinue)) {
@@ -24,13 +30,8 @@ if (-not (Get-LocalGroup 'DHCP Administrators' -ErrorAction SilentlyContinue)) {
     netsh dhcp add securitygroups | Out-Null
     Restart-Service DHCPServer
 }
+# Server Manager melden dat de configuratie na installatie klaar is
 Set-ItemProperty 'HKLM:\SOFTWARE\Microsoft\ServerManager\Roles\12' -Name ConfigurationState -Value 2
-
-# Installeren van DHCP indien nodig
-if (-not (Get-WindowsFeature DHCP).Installed) {
-    Write-Host 'Installing DHCP role'
-    Install-WindowsFeature DHCP -IncludeManagementTools | Out-Null
-}
 
 # Toevoegen DHCP aan AD kennis: uitvoeren op de DC zelf (geen double hop)
 # $using nodig voor andere sessie (variabelen van dit script in de scriptblock)

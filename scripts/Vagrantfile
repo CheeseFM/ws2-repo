@@ -44,6 +44,12 @@ Vagrant.configure("2") do |config|
 
     # Web
     server1.vm.provision "iis", type: "shell", run: "never", inline: "C:\\vagrant\\server1\\04-iis.ps1"
+
+    # GPO: CA vertrouwd door alle toestellen - pas NA de CA op server3
+    server1.vm.provision "ca-gpo", type: "shell", run: "never", inline: "C:\\vagrant\\server1\\05-ca-trust-gpo.ps1"
+
+    # Firewall: laatste stap (sommige regelgroepen bestaan pas na hun rol)
+    server1.vm.provision "firewall", type: "shell", run: "never", inline: "C:\\vagrant\\common\\firewall.ps1 -Node server1"
     
     # VirtualBox specific configuration
     server1.vm.provider "virtualbox" do |vb|
@@ -72,6 +78,9 @@ Vagrant.configure("2") do |config|
     # DNS
     server2.vm.provision "sec-dns", type: "shell", inline: "C:\\vagrant\\server2\\01-dns-secondary.ps1"
 
+    # Firewall: laatste stap
+    server2.vm.provision "firewall", type: "shell", inline: "C:\\vagrant\\common\\firewall.ps1 -Node server2"
+
     server2.vm.provider "virtualbox" do |vb|
       vb.name = "server2"
       vb.customize ["modifyvm", :id, "--groups", "/WS2"]
@@ -94,6 +103,9 @@ Vagrant.configure("2") do |config|
 
     # DHCP
     server3.vm.provision "dhcp", type: "shell", inline: "C:\\vagrant\\server3\\02-dhcp.ps1"
+
+    # Firewall: laatste stap
+    server3.vm.provision "firewall", type: "shell", inline: "C:\\vagrant\\common\\firewall.ps1 -Node server3"
 
     server3.vm.provider "virtualbox" do |vb|
       vb.name = "server3"

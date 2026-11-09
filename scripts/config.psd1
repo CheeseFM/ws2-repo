@@ -86,4 +86,58 @@
         )
     }
 
+    # Firewall per server (common\firewall.ps1)
+    # Inkomend standaard geblokkeerd, uitgaand toegelaten. Enkel wat hieronder staat mag binnen,
+    # alle andere inkomende allow-regels (Remote Desktop, File and Printer Sharing, ...) gaan uit.
+    #   Groups        = ingebouwde Windows regelgroepen (DisplayGroup), sommige bestaan pas na de rol
+    #   Rules         = eigen regels als er geen ingebouwde groep voor is
+    #   DisabledRules = regels (Name) die UIT blijven, ook al staat hun groep open
+    # De client houdt zijn standaard firewall (opdracht: enkel servers).
+    Firewall = @{
+        DefaultInbound  = 'Block'
+        DefaultOutbound = 'Allow'
+
+        # Op elke server
+        Common = @{
+            Groups = @(
+                'Windows Remote Management'    # 5985: Vagrant + remote PowerShell
+                'Core Networking'              # DHCP client op de NAT adapter, IPv6 basis
+                'OpenSSH Server'               # 22: vagrant ssh
+            )
+            Rules = @(
+                @{ Name = 'WS2-Ping-In'; Protocol = 'ICMPv4'; IcmpType = '8' }    # ping (echo request)
+            )
+        }
+
+        server1 = @{
+            Groups = @(
+                'Active Directory Domain Services'    # LDAP, GC, RPC, SMB 445 (SYSVOL/GPO), tijd, ...
+                'Active Directory Web Services'       # 9389: AD PowerShell / RSAT
+                'Kerberos Key Distribution Center'    # 88: authenticatie
+                'DNS Service'                         # 53 + zone transfer + RPC voor DNS Manager
+                'World Wide Web Services (HTTP)'      # 80: intranet site
+            )
+        }
+
+        server2 = @{
+            Groups = @(
+                'DNS Service'                         # 53 + notify van server1 + RPC voor DNS Manager
+            )
+        }
+
+        server3 = @{
+            Groups = @(
+                'DHCP Server'                         # 67/68: leases uitdelen
+                'DHCP Server Management'              # RPC voor de DHCP console
+                'Certification Authority'             # DCOM/RPC: certificaat aanvragen + CA console
+                'World Wide Web Services (HTTP)'      # 80: /CertSrv
+            )
+            # Beide groepen openen SMB (445), maar de consoles werken ook zonder -> SMB dicht
+            DisabledRules = @(
+                'Microsoft-Windows-CertificateServices-CertSvc-RPC-NP-In'
+                'Microsoft-Windows-DHCP-SMB-TCP-In'
+            )
+        }
+    }
+
 }
