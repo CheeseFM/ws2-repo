@@ -106,107 +106,89 @@ Hierbij hoort ook telkens het documenteren van deze stappen (screenshots + probl
 - [x] VirtualBox DHCP-server op het host-only netwerk **uitschakelen**
 - [x] Mappenstructuur `scripts/` opzetten:
 	- [x] Vagrantfile
-	- [x] Centraal configbestand (domeinnaam, IP's, wachtwoorden op één plek)
+	- [ ] Centraal configbestand (domeinnaam, IP's, wachtwoorden op één plek)
 	- [x] Apart bestand voor OU's en gebruikers (eenvoudig aanpasbaar)
-	- [x] Map met gedeelde functies (IP instellen, hostname, firewall)
-	- [x] Map per VM (server1, server2, server3, client)
-- [ ] **Shared folder probleem** oplossen: `C:\vagrant` is niet altijd beschikbaar na reboot/promotie/domain join
-	- [x] Bij eerste provisioning scripts lokaal kopiëren op de VM
-	- [ ] Vervolgscripts uitvoeren vanuit die lokale kopie
+	- [ ] Map met gedeelde functies (IP instellen, hostname, firewall)
+	- [ ] Map per VM (server1, server2, server3, client)
 - [ ] Vagrantfile uitbreiden met provisioners per VM
-	- [x] Reboots opvangen (opsplitsen in meerdere provisioning-stappen)
+	- [ ] Reboots opvangen (opsplitsen in meerdere provisioning-stappen)
 	- [ ] Volgorde VMs vastleggen: server1, server2, server3, client
-- [x] Mogelijk systeem voorzien om scripts **los** te kunnen uitvoeren, zodat je niet telkens van nul moet starten
+- [ ] Mogelijk systeem voorzien om scripts **los** te kunnen uitvoeren, zodat je niet telkens van nul moet starten
 	- *Benoemde provisioners (`vagrant provision server1 --provision-with dns`) + alle scripts idempotent + snapshots (`vagrant snapshot save/restore`).*
 
 ## Gemeenschappelijk (elke server)
-- [x] Hostname instellen
-- [x] Host-only adapter identificeren op basis van IP/MAC, niet op naam
-- [x] Vast IP instellen, **zonder default gateway** op host-only (anders conflict met NAT)
-- [x] DNS-servers van host-only adapter instellen
-- [x] NAT-adapter niet laten registreren in DNS
+- [ ] Hostname instellen
+- [ ] Host-only adapter identificeren op basis van IP/MAC, niet op naam
+- [ ] Vast IP instellen, **zonder default gateway** op host-only (anders conflict met NAT)
+- [ ] DNS-servers van host-only adapter instellen
+- [ ] NAT-adapter niet laten registreren in DNS
 
 ## Server1 - [[#Active Directory]], [[#DNS|Primary DNS]], [[#Webserver|IIS]]
-- [x] Vast IP `192.168.26.10`, DNS naar zichzelf
-- [x] AD DS rol installeren
-- [x] Nieuwe forest aanmaken (`WS26-<initialen>.hogent`, forest + domain level Windows Server 2025) en rebooten
-- [x] **DNS na promotie**
-	- [x] DNS-server enkel laten luisteren op host-only IP
-	- [x] Controleren dat er geen records met het NAT-IP bestaan, anders verwijderen
-		- *Verwijderd en gecontroleerd door `02-dns.ps1`. Getest na reboot van server1: `10.0.2.15` blijft weg.*
-	- [x] Reverse lookup zone aanmaken voor `192.168.26.0/24`
-	- [x] Exact één A- en één PTR-record per server
-		- *Script maakt A + PTR voor alle 3 servers aan vanuit `config.psd1` en controleert dit op het einde.*
-	- [x] NS-record voor server2 in forward én reverse zone
-	- [x] Zone transfers + notify naar server2 toestaan (voor beide zones)
-		- *`TransferToZoneNameServer` + `Notify`. Getest: tijdelijk CNAME op server1 stond na ~5 s op server2.*
-	- [x] Forwarder voor internetnamen instellen (testen of nodig)
-		- *Getest: niet nodig, root hints via NAT werken. De promotie had de DNS-servers van de host-provider (`195.130.x`) als forwarder gezet; die zijn verwijderd (werken niet op een ander netwerk). Goed voor de readme.*
+- [ ] Vast IP `192.168.26.10`, DNS naar zichzelf
+- [ ] AD DS rol installeren
+- [ ] Nieuwe forest aanmaken (`WS26-<initialen>.hogent`, forest + domain level Windows Server 2025) en rebooten
+- [ ] **DNS na promotie**
+	- [ ] DNS-server enkel laten luisteren op host-only IP
+	- [ ] Controleren dat er geen records met het NAT-IP bestaan, anders verwijderen
+	- [ ] Reverse lookup zone aanmaken voor `192.168.26.0/24`
+	- [ ] Exact één A- en één PTR-record per server
+	- [ ] NS-record voor server2 in forward én reverse zone
+	- [ ] Zone transfers + notify naar server2 toestaan (voor beide zones)
+	- [ ] Forwarder voor internetnamen instellen (testen of nodig)*
 - [ ] **OU's en gebruikers**
-	- [x] Minstens 3 OU's
-	- [x] Minstens 2 gebruikers in Domain Admins
-	- [x] Minstens 2 gewone Domain Users
+	- [ ] Minstens 3 OU's
+	- [ ] Minstens 2 gebruikers in Domain Admins
+	- [ ] Minstens 2 gewone Domain Users
 	- [ ] Wachtwoorden noteren voor readme
-- [x] **IIS**
-	- [x] Webserver-rol installeren
-	- [x] Statische Hello World-pagina op poort 80
-	- [x] DNS-record voor `intranet` aanmaken
-- [x] **GPO voor CA-vertrouwen** (pas na installatie CA op server3)
-	- [x] Root-certificaat via GPO verspreiden naar Trusted Root Certification Authorities
-		- *GPO "Trust WS26-JDV Root CA", gelinkt aan het domein (`05-ca-trust-gpo.ps1`). Getest op server1, 2 en 3; client nog te controleren.*
+- [ ] **IIS**
+	- [ ] Webserver-rol installeren
+	- [ ] Statische Hello World-pagina op poort 80
+	- [ ] DNS-record voor `intranet` aanmaken
+- [ ] **GPO voor CA-vertrouwen** (pas na installatie CA op server3)
+	- [ ] Root-certificaat via GPO verspreiden naar Trusted Root Certification Authorities
 
 ## Server2 - [[#DNS|Secundary DNS]]
-- [x] Vast IP `192.168.26.20`, DNS naar server1
-- [x] Toevoegen aan domein en rebooten (**geen** domeincontroller!)
-- [x] DNS-rol installeren
-- [x] Secondary zones aanmaken voor forward en reverse zone, met server1 als master
-- [x] Testen: record op server1 toevoegen en controleren of het op server2 verschijnt
+- [ ] Vast IP `192.168.26.20`, DNS naar server1
+- [ ] Toevoegen aan domein en rebooten (**geen** domeincontroller!)
+- [ ] DNS-rol installeren
+- [ ] Secondary zones aanmaken voor forward en reverse zone, met server1 als master
+- [ ] Testen: record op server1 toevoegen en controleren of het op server2 verschijnt
 
 ## Server3 - [[#Certificate Authority|CA]], [[#DHCP]]
-- [x] Vast IP `192.168.26.30`, DNS naar server1 en server2
-- [x] Toevoegen aan domein en rebooten
-- [x] **CA** (uitvoeren als domain admin)
-	- [x] CA-rol en Web Enrollment installeren
-	- [x] Enterprise Root CA configureren
-	- [x] Web Enrollment configureren
-		- *Server 2025 eist standaard HTTPS voor `/CertSrv` (403.4, bescherming tegen NTLM relay / ESC8). Opdracht vraagt `http://`, dus voor `/CertSrv` uitgezet: bewuste afweging, vermelden in readme.*
-	- [x] Testen of `http://<FQDN server3>/CertSrv` werkt
-		- *Vanaf host als `sanne.maes`: HTTP 200, zonder login 401.*
+- [ ] Vast IP `192.168.26.30`, DNS naar server1 en server2
+- [ ] Toevoegen aan domein en rebooten
+- [ ] **CA** (uitvoeren als domain admin)
+	- [ ] CA-rol en Web Enrollment installeren
+	- [ ] Enterprise Root CA configureren
+	- [ ] Web Enrollment configureren
+	- [ ] Testen of `http://<FQDN server3>/CertSrv` werkt
 - [ ] **DHCP**
-	- [x] DHCP-rol installeren en autoriseren in AD
-		- *Autoriseren via `Invoke-AsDomainAdmin` (scheduled task als domain admin): `Add-DhcpServerInDC` heeft geen `-Credential`, en `Invoke-Command` faalt op het double-hop probleem.*
-	- [x] Security groups aanmaken en Server Manager-melding wegwerken
-	- [x] Scope `192.168.26.100 - .200` aanmaken
-	- [x] Exclusion range `192.168.26.151 - .200`
+	- [ ] DHCP-rol installeren en autoriseren in AD*
+	- [ ] Security groups aanmaken en Server Manager-melding wegwerken
+	- [ ] Scope `192.168.26.100 - .200` aanmaken
+	- [ ] Exclusion range `192.168.26.151 - .200`
 	- [ ] Opties bewust kiezen en motiveren in readme:
-		- *Ingesteld in `02-dhcp.ps1`; motivatie nog in de readme schrijven.*
-		- [x] DNS-servers (server1 en server2)
-		- [x] DNS-domeinnaam
-		- [x] Router-optie bewust weglaten (host-only heeft geen uplink)
-	- [x] DHCP geen DNS-records laten registreren voor clients
+		- [ ] DNS-servers (server1 en server2)
+		- [ ] DNS-domeinnaam
+		- [ ] Router-optie bewust weglaten (host-only heeft geen uplink)
+	- [ ] DHCP geen DNS-records laten registreren voor clients
 
 ## Client - [[#Management tools|RSAT tools]]
-- [x] Host-only adapter op DHCP, controleren dat IP in `.100 - .150` valt
-	- *`base.ps1` wacht op een lease van server3 (anders faalt de join). Kreeg `192.168.26.100`.*
-- [x] DNS-registratie uitschakelen op beide adapters
-	- *Gecontroleerd op server1: geen A- of PTR-record voor de client.*
-- [x] Toevoegen aan domein en rebooten
-- [x] Enkel de nodige RSAT tools installeren:
-	- *Duurt ~1 uur via Windows Update (traagste stap). `Rsat.ServerManager.Tools` komt automatisch mee.*
-	- [x] Active Directory
-	- [x] DNS
-	- [x] DHCP
-	- [x] Certificate Services
-	- [x] Group Policy Management
-- [x] Controleren dat het CA-certificaat vertrouwd wordt
-	- *Via de GPO; gecontroleerd in `01-rsat.ps1`.*
+- [ ] Host-only adapter op DHCP, controleren dat IP in `.100 - .150` valt
+- [ ] DNS-registratie uitschakelen op beide adapters*
+- [ ] Toevoegen aan domein en rebooten
+- [ ] Enkel de nodige RSAT tools installeren:*
+	- [ ] Active Directory
+	- [ ] DNS
+	- [ ] DHCP
+	- [ ] Certificate Services
+	- [ ] Group Policy Management
+- [ ] Controleren dat het CA-certificaat vertrouwd wordt
 
 ## Firewall
-- [x] Default policy op alle servers: inkomend blokkeren, uitgaand toelaten, firewall aan
-- [x] WinRM openlaten, anders verliest Vagrant de verbinding
-	- *`firewall.ps1` zet de toegelaten groepen (incl. WinRM) eerst aan, pas daarna wordt de rest uitgezet.*
+- [ ] Default policy op alle servers: inkomend blokkeren, uitgaand toelaten, firewall aan
+- [ ] WinRM openlaten, anders verliest Vagrant de verbinding
 - [ ] Lijst opstellen en motiveren in readme:
-	- *Lijst staat (met motivatie) in `config.psd1`; nog in de readme zetten.*
 
 | Server  | Toegelaten inkomend (regelgroepen)                                                                     |
 | ------- | ------------------------------------------------------------------------------------------------------ |
@@ -215,16 +197,13 @@ Hierbij hoort ook telkens het documenteren van deze stappen (screenshots + probl
 | server2 | DNS Service (53 + RPC voor beheer)                                                                    |
 | server3 | DHCP Server, DHCP Server Management (RPC console), Certification Authority (DCOM/RPC), HTTP (CertSrv) |
 
-	- *Geen SMB op server3: certificaataanvragen gaan via DCOM/RPC, CRL/AIA via HTTP/LDAP.*
-	- *Expliciet uitgezet: Remote Desktop, File and Printer Sharing, DFS/File Replication, WMI, mDNS, AllJoyn, Delivery Optimization, HTTPS/QUIC, `WinRM-Packer`/`OpenSSH-Packer` (extra regels van de box).*
-- [x] Waar mogelijk ingebouwde regelgroepen gebruiken
-- [x] Testen dat alles werkt met firewall aan
-	- *`client/02-verify.ps1`: 12 tests vanaf de client als domain admin, alles OK. Ook notify server1 → server2 en GPO op server2/3 OK.*
+- [ ] Waar mogelijk ingebouwde regelgroepen gebruiken
+- [ ] Testen dat alles werkt met firewall aan*
 
 ## Testen
 - [ ] Volledige uitrol van nul zonder manuele fixes
 - [ ] Duur van volledige uitrol noteren (handig voor video)
-- [x] Commando voor tijdelijk DNS-record (CNAME) voorbereiden voor de demo
+- [ ] Commando voor tijdelijk DNS-record (CNAME) voorbereiden voor de demo
 	- *Server1: `Add-DnsServerResourceRecordCName -ZoneName WS26-JDV.hogent -Name demotest -HostNameAlias ad-web-dns.WS26-JDV.hogent.` → server2: `Get-DnsServerResourceRecord -ZoneName WS26-JDV.hogent -Name demotest`*
 
 ## Finalisatie
