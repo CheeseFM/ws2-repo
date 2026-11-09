@@ -87,6 +87,14 @@ Vagrant.configure("2") do |config|
     server3.vm.network "private_network", ip: "192.168.26.30", auto_config: false
     # Set the host name via script
     server3.vm.provision "base", type: "shell", inline: "C:\\vagrant\\common\\base.ps1 -Node server3", reboot: true
+    server3.vm.provision "join", type: "shell", inline: "C:\\vagrant\\common\\join-domain.ps1 -Node server3", reboot: true
+
+    # CA
+    server3.vm.provision "ca", type: "shell", inline: "C:\\vagrant\\server3\\01-ca.ps1"
+
+    # DHCP
+    server3.vm.provision "dhcp", type: "shell", inline: "C:\\vagrant\\server3\\02-dhcp.ps1"
+
     server3.vm.provider "virtualbox" do |vb|
       vb.name = "server3"
       vb.customize ["modifyvm", :id, "--groups", "/WS2"]

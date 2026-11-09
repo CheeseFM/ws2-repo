@@ -156,7 +156,7 @@ Hierbij hoort ook telkens het documenteren van deze stappen (screenshots + probl
 
 ## Server3 - [[#Certificate Authority|CA]], [[#DHCP]]
 - [x] Vast IP `192.168.26.30`, DNS naar server1 en server2
-- [ ] Toevoegen aan domein en rebooten
+- [x] Toevoegen aan domein en rebooten
 - [ ] **CA** (uitvoeren als domain admin)
 	- [ ] CA-rol en Web Enrollment installeren
 	- [ ] Enterprise Root CA configureren

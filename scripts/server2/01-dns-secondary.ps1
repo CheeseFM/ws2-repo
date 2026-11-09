@@ -1,4 +1,5 @@
 # Server 2 - Stap 1: DNS
+$ErrorActionPreference = 'Stop' # Stoppen bij fout
 
 #Afhalen Get-LabConfig
 . "$PSScriptRoot\..\common\config.ps1"

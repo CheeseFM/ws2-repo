@@ -1,6 +1,8 @@
 
 # Vraagt welke server er moet afgehaald worden uit config
 # https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced_parameters?view=powershell-7.6
+$ErrorActionPreference = 'Stop' # Stoppen bij fout
+
 param(
     [Parameter(Mandatory)]
     [string]$Node

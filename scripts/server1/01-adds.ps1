@@ -3,6 +3,7 @@
 # Oplossing: Vagrant draait een scheduled task om na promotie script uit te voeren
 # https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/?view=windowsserver2025-ps
 # -> Hiervoor functie Promote
+$ErrorActionPreference = 'Stop' # Stoppen bij fout
 
 param(
     [switch]$Promote

@@ -1,13 +1,14 @@
 # Server/client toevoegen aan domein
-
 param(
     [Parameter(Mandatory)]
     [string]$Node
 )
 
 # Importeren van functies (Get-LabConfig en Get-DomainAdminCredential)
+$ErrorActionPreference = 'Stop' # Stoppen bij fout
 . "$PSScriptRoot\config.ps1"
 . "$PSScriptRoot\as-domain-admin.ps1"
+
 $cfg     = Get-LabConfig
 $zone    = $cfg.Domain.Name
 $primary = $cfg.Nodes[$cfg.Dns.PrimaryNode].IP

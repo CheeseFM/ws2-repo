@@ -50,6 +50,15 @@
         )
     }
 
+    # Server3 CA
+    Ca = @{
+        CommonName    = 'WS26-JDV-Root-CA'
+        Type          = 'EnterpriseRootCa'
+        ValidityYears = 5
+        GpoName       = 'Trust WS26-JDV Root CA'
+    }
+
+
     # Webserver (IIS) op server1
     Iis = @{
         HostName = 'intranet'   # -> intranet.WS26-JDV.hogent (CNAME hierboven)

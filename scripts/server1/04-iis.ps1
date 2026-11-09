@@ -1,4 +1,5 @@
 # Server 1 - Stap 4: IIs
+$ErrorActionPreference = 'Stop' # Stoppen bij fout
 
 # LabConfig
 . "$PSScriptRoot\..\common\config.ps1"

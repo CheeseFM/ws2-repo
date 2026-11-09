@@ -1,6 +1,7 @@
 # Server 1 - Stap 2: primaire DNS
 # Uitvoeren na de herstart van de promotie:
 #   vagrant provision server1 --provision-with dns
+$ErrorActionPreference = 'Stop' # Stoppen bij fout
 
 # Configuratiebestand inladen
 . "$PSScriptRoot\..\common\config.ps1"

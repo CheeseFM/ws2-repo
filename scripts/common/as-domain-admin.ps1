@@ -1,5 +1,5 @@
 # Hulpfuncties voor stappen die domein administrator rechten nodig hebben.
-
+$ErrorActionPreference = 'Stop' # Stoppen bij fout
 
 # Credential van de domein administrator (uit config.psd1).
 # Voor cmdlets met een -Credential parameter, zoals Add-Computer.

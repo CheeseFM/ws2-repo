@@ -1,4 +1,5 @@
 # Server 1 - Stap 3: OUs en gebruikers installeren
+$ErrorActionPreference = 'Stop' # Stoppen bij fout
 
 # Invoegen configuratie functie
 . "$PSScriptRoot\..\common\config.ps1"
