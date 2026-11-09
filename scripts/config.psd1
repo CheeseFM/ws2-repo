@@ -4,35 +4,35 @@
     Domain = @{
         # https://learn.microsoft.com/nl-nl/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-
         Name = 'WS26-JDV.hogent'
-        NetBiosName    = 'WS26-JDV'
-        ForestMode     = 'Win2025'
-        DomainMode     = 'Win2025'
+        NetBiosName = 'WS26-JDV'
+        ForestMode = 'Win2025'
+        DomainMode = 'Win2025'
         SafeModePassword = 'Vagrant123!'
         AdministratorPassword = 'Vagrant123!'
     }
 
     Network = @{
         # Host-only network
-        NetworkId    = '192.168.26.0'
+        NetworkId = '192.168.26.0'
         PrefixLength = 24
 
         # VirtualBox NAT always geeft ons 10.0.2.x;
-        NatSubnet    = '10.0.2.*'
+        NatSubnet = '10.0.2.*'
     }
 
     # Per server het juiste IP en host naam
     Nodes = @{
         server1 = @{
             Hostname = 'ad-web-dns'
-            IP       = '192.168.26.10'
+            IP = '192.168.26.10'
         }
         server2 = @{
             Hostname = 'sec-dns'
-            IP       = '192.168.26.20'
+            IP = '192.168.26.20'
         }
         server3 = @{
             Hostname = 'ca-dhcp'
-            IP       = '192.168.26.30'
+            IP = '192.168.26.30'
         }
         client = @{
             Hostname = 'client'
@@ -41,29 +41,38 @@
     }
 
     Dns = @{
-        PrimaryNode   = 'server1'
+        PrimaryNode = 'server1'
         SecondaryNode = 'server2'
-        ReverseZone   = '26.168.192.in-addr.arpa'
-        Forwarders    = @()
+        ReverseZone = '26.168.192.in-addr.arpa'
+        Forwarders = @()
         Records = @(
             @{ Name = 'intranet'; Type = 'CNAME'; Target = 'ad-web-dns' }
         )
     }
 
-    # Server3 CA
-    Ca = @{
-        CommonName    = 'WS26-JDV-Root-CA'
-        Type          = 'EnterpriseRootCa'
-        ValidityYears = 5
-        GpoName       = 'Trust WS26-JDV Root CA'
+    Dhcp = @{
+        ScopeName = 'Host-only clients'
+        StartRange = '192.168.26.100'
+        EndRange = '192.168.26.200'
+        SubnetMask = '255.255.255.0'
+        ExclusionStart = '192.168.26.151'
+        ExclusionEnd = '192.168.26.200'
+        LeaseDuration = '8.00:00:00'
     }
 
+    # Server3 CA
+    Ca = @{
+        CommonName = 'WS26-JDV-Root-CA'
+        Type = 'EnterpriseRootCa'
+        ValidityYears = 5
+        GpoName = 'Trust WS26-JDV Root CA'
+    }
 
     # Webserver (IIS) op server1
     Iis = @{
         HostName = 'intranet'   # -> intranet.WS26-JDV.hogent (CNAME hierboven)
         SiteName = 'Intranet'   # naam van de site in IIS, ook gebruikt voor C:\inetpub\intranet
-        Port     = 80
+        Port = 80
     }
 
 }

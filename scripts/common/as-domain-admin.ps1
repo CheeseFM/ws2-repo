@@ -9,17 +9,15 @@ function Get-DomainAdminCredential {
     New-Object PSCredential("$($Config.Domain.NetBiosName)\Administrator", $password)
 }
 
-# Script als domein administrator uitvoeren via CredSSP.
-# https://learn.microsoft.com/en-us/powershell/module/microsoft.wsman.management/enable-wsmancredssp?view=powershell-7.6
+# Script als domein administrator uitvoeren via een loopback sessie.
+# -EnableNetworkAccess geeft de sessie een interactief token, zodat ze verder mag naar de DC
+# (geen double hop probleem, dus geen CredSSP nodig).
+# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command
 function Invoke-AsDomainAdmin {
     param(
         [Parameter(Mandatory)] $Config,
         [Parameter(Mandatory)] [scriptblock]$ScriptBlock
     )
-    # CredSSP aanzetten: deze machine mag credentials doorgeven aan zichzelf
-    Enable-WSManCredSSP -Role Server -Force | Out-Null
-    Enable-WSManCredSSP -Role Client -DelegateComputer $env:COMPUTERNAME -Force | Out-Null
-
-    Invoke-Command -ComputerName $env:COMPUTERNAME -Authentication Credssp `
+    Invoke-Command -ComputerName localhost -EnableNetworkAccess `
         -Credential (Get-DomainAdminCredential -Config $Config) -ScriptBlock $ScriptBlock
 }

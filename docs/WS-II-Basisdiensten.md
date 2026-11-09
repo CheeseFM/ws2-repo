@@ -157,21 +157,21 @@ Hierbij hoort ook telkens het documenteren van deze stappen (screenshots + probl
 ## Server3 - [[#Certificate Authority|CA]], [[#DHCP]]
 - [x] Vast IP `192.168.26.30`, DNS naar server1 en server2
 - [x] Toevoegen aan domein en rebooten
-- [ ] **CA** (uitvoeren als domain admin)
-	- [ ] CA-rol en Web Enrollment installeren
-	- [ ] Enterprise Root CA configureren
-	- [ ] Web Enrollment configureren
+- [x] **CA** (uitvoeren als domain admin)
+	- [x] CA-rol en Web Enrollment installeren
+	- [x] Enterprise Root CA configureren
+	- [x] Web Enrollment configureren
 	- [ ] Testen of `http://<FQDN server3>/CertSrv` werkt
-- [ ] **DHCP**
-	- [ ] DHCP-rol installeren en autoriseren in AD*
-	- [ ] Security groups aanmaken en Server Manager-melding wegwerken
-	- [ ] Scope `192.168.26.100 - .200` aanmaken
-	- [ ] Exclusion range `192.168.26.151 - .200`
+- [x] **DHCP**
+	- [x] DHCP-rol installeren en autoriseren in AD*
+	- [x] Security groups aanmaken en Server Manager-melding wegwerken
+	- [x] Scope `192.168.26.100 - .200` aanmaken
+	- [x] Exclusion range `192.168.26.151 - .200`
 	- [ ] Opties bewust kiezen en motiveren in readme:
 		- [ ] DNS-servers (server1 en server2)
 		- [ ] DNS-domeinnaam
 		- [ ] Router-optie bewust weglaten (host-only heeft geen uplink)
-	- [ ] DHCP geen DNS-records laten registreren voor clients
+	- [x] DHCP geen DNS-records laten registreren voor clients
 
 ## Client - [[#Management tools|RSAT tools]]
 - [ ] Host-only adapter op DHCP, controleren dat IP in `.100 - .150` valt
