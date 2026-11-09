@@ -30,8 +30,12 @@ Vagrant.configure("2") do |config|
     server1.vm.box_version = "2607.0.0"
     # Connect the second adapter to an internal network, do not configure IP (the provided IP is just a place holder)
     server1.vm.network "private_network", ip: "192.168.26.10", auto_config: false
-    # Set the host name of the VM
-    server1.vm.hostname = "server1"
+    # Set the host name via script
+    server1.vm.provision "base", type: "shell", inline: "C:\\vagrant\\common\\base.ps1 -Node server1", reboot: true
+
+    # ADDS
+    server1.vm.provision "adds", type: "shell", inline: "C:\\vagrant\\server1\\01-adds.ps1"
+
     # VirtualBox specific configuration
     server1.vm.provider "virtualbox" do |vb|
       # VirtualBox Display Name
@@ -50,7 +54,8 @@ Vagrant.configure("2") do |config|
     server2.vm.box = "gusztavvargadr/windows-server-2025-standard-core"
     server2.vm.box_version = "2607.0.0"
     server2.vm.network "private_network", ip: "192.168.26.20", auto_config: false
-    server2.vm.hostname = "server2"
+    # Set the host name via script
+    server2.vm.provision "base", type: "shell", inline: "C:\\vagrant\\common\\base.ps1 -Node server2", reboot: true
     server2.vm.provider "virtualbox" do |vb|
       vb.name = "server2"
       vb.customize ["modifyvm", :id, "--groups", "/WS2"]
@@ -64,7 +69,8 @@ Vagrant.configure("2") do |config|
     server3.vm.box = "gusztavvargadr/windows-server-2025-standard-core"
     server3.vm.box_version = "2607.0.0"
     server3.vm.network "private_network", ip: "192.168.26.30", auto_config: false
-    server3.vm.hostname = "server3"
+    # Set the host name via script
+    server3.vm.provision "base", type: "shell", inline: "C:\\vagrant\\common\\base.ps1 -Node server3", reboot: true
     server3.vm.provider "virtualbox" do |vb|
       vb.name = "server3"
       vb.customize ["modifyvm", :id, "--groups", "/WS2"]
@@ -78,7 +84,8 @@ Vagrant.configure("2") do |config|
     client.vm.box = "gusztavvargadr/windows-11-25h2-enterprise"
     client.vm.box_version = "2607.1.0"
     client.vm.network "private_network", ip: "192.168.26.40", auto_config: false
-    client.vm.hostname = "client"
+    # Set the host name via script
+    client.vm.provision "base", type: "shell", inline: "C:\\vagrant\\common\\base.ps1 -Node client", reboot: true
     client.vm.provider "virtualbox" do |vb|
       vb.name = "client"
       vb.customize ["modifyvm", :id, "--groups", "/WS2"]

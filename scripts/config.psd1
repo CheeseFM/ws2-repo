@@ -7,6 +7,8 @@
         NetBiosName    = 'WS26-JDV'
         ForestMode     = 'Win2025'
         DomainMode     = 'Win2025'
+        SafeModePassword = 'Vagrant123!'
+        AdministratorPassword = 'Vagrant123!'
     }
 
     Network = @{
@@ -34,7 +36,7 @@
         }
         client = @{
             Hostname = 'client'
-            IP       = $null    # dynamic, via DHCP op server3
+            IP = $null    # dynamic, via DHCP op server3
         }
     }
 

@@ -108,25 +108,25 @@ Hierbij hoort ook telkens het documenteren van deze stappen (screenshots + probl
 	- [x] Vagrantfile
 	- [x] Centraal configbestand (domeinnaam, IP's, wachtwoorden op één plek)
 	- [x] Apart bestand voor OU's en gebruikers (eenvoudig aanpasbaar)
-	- [ ] Map met gedeelde functies (IP instellen, hostname, firewall)
-	- [ ] Map per VM (server1, server2, server3, client)
-- [ ] Vagrantfile uitbreiden met provisioners per VM
-	- [ ] Reboots opvangen (opsplitsen in meerdere provisioning-stappen)
-	- [ ] Volgorde VMs vastleggen: server1, server2, server3, client
-- [ ] Mogelijk systeem voorzien om scripts **los** te kunnen uitvoeren, zodat je niet telkens van nul moet starten
+	- [x] Map met gedeelde functies (IP instellen, hostname, firewall)
+	- [x] Map per VM (server1, server2, server3, client)
+- [x] Vagrantfile uitbreiden met provisioners per VM
+	- [x] Reboots opvangen (opsplitsen in meerdere provisioning-stappen)
+	- [x] Volgorde VMs vastleggen: server1, server2, server3, client
+- [x] Mogelijk systeem voorzien om scripts **los** te kunnen uitvoeren, zodat je niet telkens van nul moet starten
 	- *Benoemde provisioners (`vagrant provision server1 --provision-with dns`) + alle scripts idempotent + snapshots (`vagrant snapshot save/restore`).*
 
 ## Gemeenschappelijk (elke server)
-- [ ] Hostname instellen
+- [x] Hostname instellen
 - [x] Host-only adapter identificeren op basis van IP/MAC, niet op naam
-- [ ] Vast IP instellen, **zonder default gateway** op host-only (anders conflict met NAT)
-- [ ] DNS-servers van host-only adapter instellen
-- [ ] NAT-adapter niet laten registreren in DNS
+- [x] Vast IP instellen, **zonder default gateway** op host-only (anders conflict met NAT)
+- [x] DNS-servers van host-only adapter instellen
+- [x] NAT-adapter niet laten registreren in DNS
 
 ## Server1 - [[#Active Directory]], [[#DNS|Primary DNS]], [[#Webserver|IIS]]
-- [ ] Vast IP `192.168.26.10`, DNS naar zichzelf
-- [ ] AD DS rol installeren
-- [ ] Nieuwe forest aanmaken (`WS26-<initialen>.hogent`, forest + domain level Windows Server 2025) en rebooten
+- [x] Vast IP `192.168.26.10`, DNS naar zichzelf
+- [x] AD DS rol installeren
+- [x] Nieuwe forest aanmaken (`WS26-<initialen>.hogent`, forest + domain level Windows Server 2025) en rebooten
 - [ ] **DNS na promotie**
 	- [ ] DNS-server enkel laten luisteren op host-only IP
 	- [ ] Controleren dat er geen records met het NAT-IP bestaan, anders verwijderen
