@@ -1,4 +1,4 @@
-# Server 1 - Stap 1 AD services installeren indien nodig
+# Server 1 - Stap 1: AD services installeren indien nodig
 # Probleem: Vagrant verliest connectie en wilt dit niet terug verbinden.
 # Oplossing: Vagrant draait een scheduled task om na promotie script uit te voeren
 # https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/?view=windowsserver2025-ps
@@ -14,7 +14,6 @@ $cfg    = Get-LabConfig
 $domain = $cfg.Domain
 
 $localDir = 'C:\ws2'
-$logFile  = "$localDir\adds-promotion.log"
 $taskName = 'WS2-ADDS-Promotion'
 
 # -> FASE 2

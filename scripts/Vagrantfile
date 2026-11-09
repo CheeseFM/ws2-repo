@@ -36,6 +36,9 @@ Vagrant.configure("2") do |config|
     # ADDS
     server1.vm.provision "adds", type: "shell", inline: "C:\\vagrant\\server1\\01-adds.ps1"
 
+    # DNS (na herstart promotie): vagrant provision server1 --provision-with dns
+    server1.vm.provision "dns", type: "shell", run: "never", inline: "C:\\vagrant\\server1\\02-dns.ps1"
+
     # VirtualBox specific configuration
     server1.vm.provider "virtualbox" do |vb|
       # VirtualBox Display Name
