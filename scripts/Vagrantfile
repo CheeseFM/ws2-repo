@@ -36,9 +36,15 @@ Vagrant.configure("2") do |config|
     # ADDS
     server1.vm.provision "adds", type: "shell", inline: "C:\\vagrant\\server1\\01-adds.ps1"
 
-    # DNS (na herstart promotie): vagrant provision server1 --provision-with dns
+    # DNS
     server1.vm.provision "dns", type: "shell", run: "never", inline: "C:\\vagrant\\server1\\02-dns.ps1"
 
+    # OUS
+    server1.vm.provision "ous", type: "shell", run: "never", inline: "C:\\vagrant\\server1\\03-ous.ps1"
+
+    # Web
+    server1.vm.provision "iis", type: "shell", run: "never", inline: "C:\\vagrant\\server1\\04-iis.ps1"
+    
     # VirtualBox specific configuration
     server1.vm.provider "virtualbox" do |vb|
       # VirtualBox Display Name
@@ -96,7 +102,7 @@ Vagrant.configure("2") do |config|
       vb.cpus = "2"
     end
   end
-192
+
   # Is Hyper-V volledig uitgeschakeld, maar krijg je nog steeds timeouts bij uitrollen van de client?
   # Dan kan je eventueel de timeout aanpassen in onderstaande regel. De standaard timeout is 300 seconden (5 minuten), maar is nu al aangepast naar 600 seconden (10 minuten).
   config.vm.boot_timeout = 1800

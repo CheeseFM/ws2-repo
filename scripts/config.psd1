@@ -50,4 +50,11 @@
         )
     }
 
+    # Webserver (IIS) op server1
+    Iis = @{
+        HostName = 'intranet'   # -> intranet.WS26-JDV.hogent (CNAME hierboven)
+        SiteName = 'Intranet'   # naam van de site in IIS, ook gebruikt voor C:\inetpub\intranet
+        Port     = 80
+    }
+
 }

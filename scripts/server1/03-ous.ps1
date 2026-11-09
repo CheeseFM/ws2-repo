@@ -28,10 +28,37 @@ for ($i = 1; -not (Test-AdReady); $i++) {
 # OUs idempotent toevoegen (zoeken via Get-ADOrganizationalUnit)
 foreach ($ou in $ous.OUs) {
     if (-not (Get-ADOrganizationalUnit -Filter "Name -eq '$($ou.Name)'" -SearchBase $domainDn -SearchScope OneLevel)) {
-        Write-Host "Creating OU $($ou.Name)"
+        Write-Host "OU wordt gemaakt $($ou.Name)"
 
         # Toevoegen van OU
         New-ADOrganizationalUnit -Name $ou.Name -Path $domainDn
     }
 }
 
+# Gebruikers invoegen
+foreach ($user in $ous.Users) {
+    if (-not (Get-ADUser -Filter "SamAccountName -eq '$($user.SamAccountName)'")) {
+        Write-Host "Maken van user $($user.SamAccountName) in OU $($user.OU)"
+
+        # Toevoegen gebruiker a.d.h.v. psd1 file
+        New-ADUser `
+            -Name "$($user.GivenName) $($user.Surname)" `
+            -GivenName $user.GivenName `
+            -Surname $user.Surname `
+            -SamAccountName $user.SamAccountName `
+            -UserPrincipalName "$($user.SamAccountName)@$zone" `
+            -Path "OU=$($user.OU),$domainDn" `
+            -AccountPassword (ConvertTo-SecureString $user.Password -AsPlainText -Force) `
+            -PasswordNeverExpires $true `
+            -Enabled $true
+    }
+
+    # Indien niet admin en 
+    if ($user.Admin) {
+        Write-Host "Toevoegen van $($user.SamAccountName) aan Domain Admins"
+        Add-ADGroupMember 'Domain Admins' -Members $user.SamAccountName
+    }
+}
+
+# Klaar
+Write-Host '[V] OUs en gebruikers klaar'
