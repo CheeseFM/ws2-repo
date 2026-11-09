@@ -128,34 +128,34 @@ Hierbij hoort ook telkens het documenteren van deze stappen (screenshots + probl
 - [x] AD DS rol installeren
 - [x] Nieuwe forest aanmaken (`WS26-<initialen>.hogent`, forest + domain level Windows Server 2025) en rebooten
 - [ ] **DNS na promotie**
-	- [ ] DNS-server enkel laten luisteren op host-only IP
-	- [ ] Controleren dat er geen records met het NAT-IP bestaan, anders verwijderen
-	- [ ] Reverse lookup zone aanmaken voor `192.168.26.0/24`
-	- [ ] Exact één A- en één PTR-record per server
-	- [ ] NS-record voor server2 in forward én reverse zone
+	- [x] DNS-server enkel laten luisteren op host-only IP
+	- [x] Controleren dat er geen records met het NAT-IP bestaan, anders verwijderen
+	- [x] Reverse lookup zone aanmaken voor `192.168.26.0/24`
+	- [x] Exact één A- en één PTR-record per server
+	- [x] NS-record voor server2 in forward én reverse zone
 	- [ ] Zone transfers + notify naar server2 toestaan (voor beide zones)
 	- [ ] Forwarder voor internetnamen instellen (testen of nodig)*
-- [ ] **OU's en gebruikers**
-	- [ ] Minstens 3 OU's
-	- [ ] Minstens 2 gebruikers in Domain Admins
-	- [ ] Minstens 2 gewone Domain Users
+- [x] **OU's en gebruikers**
+	- [x] Minstens 3 OU's
+	- [x] Minstens 2 gebruikers in Domain Admins
+	- [x] Minstens 2 gewone Domain Users
 	- [ ] Wachtwoorden noteren voor readme
-- [ ] **IIS**
-	- [ ] Webserver-rol installeren
-	- [ ] Statische Hello World-pagina op poort 80
-	- [ ] DNS-record voor `intranet` aanmaken
+- [x] **IIS**
+	- [x] Webserver-rol installeren
+	- [x] Statische Hello World-pagina op poort 80
+	- [x] DNS-record voor `intranet` aanmaken
 - [ ] **GPO voor CA-vertrouwen** (pas na installatie CA op server3)
 	- [ ] Root-certificaat via GPO verspreiden naar Trusted Root Certification Authorities
 
 ## Server2 - [[#DNS|Secundary DNS]]
-- [ ] Vast IP `192.168.26.20`, DNS naar server1
-- [ ] Toevoegen aan domein en rebooten (**geen** domeincontroller!)
-- [ ] DNS-rol installeren
-- [ ] Secondary zones aanmaken voor forward en reverse zone, met server1 als master
+- [x] Vast IP `192.168.26.20`, DNS naar server1
+- [x] Toevoegen aan domein en rebooten (**geen** domeincontroller!)
+- [x] DNS-rol installeren
+- [x] Secondary zones aanmaken voor forward en reverse zone, met server1 als master
 - [ ] Testen: record op server1 toevoegen en controleren of het op server2 verschijnt
 
 ## Server3 - [[#Certificate Authority|CA]], [[#DHCP]]
-- [ ] Vast IP `192.168.26.30`, DNS naar server1 en server2
+- [x] Vast IP `192.168.26.30`, DNS naar server1 en server2
 - [ ] Toevoegen aan domein en rebooten
 - [ ] **CA** (uitvoeren als domain admin)
 	- [ ] CA-rol en Web Enrollment installeren
