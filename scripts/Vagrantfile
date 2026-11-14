@@ -48,6 +48,9 @@ Vagrant.configure("2") do |config|
     # GPO: CA vertrouwd door alle toestellen - pas NA de CA op server3
     server1.vm.provision "ca-gpo", type: "shell", run: "never", inline: "C:\\vagrant\\server1\\05-ca-trust-gpo.ps1"
 
+    # HTTPS voor de intranet site - pas NA de CA en de CA GPO
+    # server1.vm.provision "iis-https", type: "shell", run: "never", inline: "C:\\vagrant\\server1\\06-iis-https.ps1"
+
     # Firewall: laatste stap (sommige regelgroepen bestaan pas na hun rol)
     server1.vm.provision "firewall", type: "shell", run: "never", inline: "C:\\vagrant\\common\\firewall.ps1 -Node server1"
     
@@ -138,6 +141,7 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  # NOTE!
   # Is Hyper-V volledig uitgeschakeld, maar krijg je nog steeds timeouts bij uitrollen van de client?
   # Dan kan je eventueel de timeout aanpassen in onderstaande regel. De standaard timeout is 300 seconden (5 minuten), maar is nu al aangepast naar 600 seconden (10 minuten).
   config.vm.boot_timeout = 1800

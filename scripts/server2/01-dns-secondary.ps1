@@ -36,11 +36,27 @@ if ($listening.Count -ne 1 -or "$($listening[0])" -ne $me.IP) {
     Restart-Service DNS
 }
 
+# Wachten tot DNS service effectief klaar is (anders WIN32 21 = ERROR_NOT_READY)
+$ready = $false
+for ($i = 0; $i -lt 30 -and -not $ready; $i++) {
+    try {
+        Get-DnsServerZone -ErrorAction Stop | Out-Null
+        $ready = $true
+    } catch {
+        Start-Sleep -Seconds 2
+    }
+}
+if (-not $ready) { throw 'DNS service niet klaar na 60s' }
+
 # Zone transfer
 # https://learn.microsoft.com/en-us/powershell/module/dnsserver/add-dnsserversecondaryzone?view=windowsserver2025-ps
 # https://learn.microsoft.com/en-us/powershell/module/dnsserver/start-dnsserverzonetransfer?view=windowsserver2025-ps
 foreach ($z in $zones) { # Haalt zones af uit config (Domein + Reverse)
-    if (-not (Get-DnsServerZone -Name $z -ErrorAction SilentlyContinue)) {
+    # try/catch: Get-DnsServerZone gooit een terminerende CimException als de zone niet bestaat
+    $exists = $true
+    try { Get-DnsServerZone -Name $z -ErrorAction Stop | Out-Null } catch { $exists = $false }
+
+    if (-not $exists) {
         Write-Host "Creating secondary zone $z (master $primary)"
         Add-DnsServerSecondaryZone -Name $z -ZoneFile "$z.dns" -MasterServers $primary
     }

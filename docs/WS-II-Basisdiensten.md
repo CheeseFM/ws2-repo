@@ -133,7 +133,7 @@ Hierbij hoort ook telkens het documenteren van deze stappen (screenshots + probl
 	- [x] Reverse lookup zone aanmaken voor `192.168.26.0/24`
 	- [x] Exact één A- en één PTR-record per server
 	- [x] NS-record voor server2 in forward én reverse zone
-	- [ ] Zone transfers + notify naar server2 toestaan (voor beide zones)
+	- [x] Zone transfers + notify naar server2 toestaan (voor beide zones)
 	- [ ] Forwarder voor internetnamen instellen (testen of nodig)*
 - [x] **OU's en gebruikers**
 	- [x] Minstens 3 OU's

@@ -73,6 +73,8 @@
         HostName = 'intranet'   # -> intranet.WS26-JDV.hogent (CNAME hierboven)
         SiteName = 'Intranet'   # naam van de site in IIS, ook gebruikt voor C:\inetpub\intranet
         Port = 80
+        # HttpsPort = 443               # server1\06-iis-https.ps1
+        # CertTemplate = 'WebServer'    # template op de CA voor het certificaat
     }
 
     # RSAT tools op de client (client\01-rsat.ps1), enkel wat nodig is
@@ -116,6 +118,7 @@
                 'Kerberos Key Distribution Center'    # 88: authenticatie
                 'DNS Service'                         # 53 + zone transfer + RPC voor DNS Manager
                 'World Wide Web Services (HTTP)'      # 80: intranet site
+                # 'Secure World Wide Web Services (HTTPS)'    # 443: intranet site via https
             )
         }
 

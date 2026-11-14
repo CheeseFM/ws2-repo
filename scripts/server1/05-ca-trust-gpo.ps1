@@ -30,12 +30,12 @@ Invoke-AsDomainAdmin -Config $cfg -Parameters @{ GpoName = $ca.GpoName; CaName =
     $thumb = $cert.Thumbprint
     Write-Output "Root certificaat: $($cert.Subject) ($thumb)"
 
-    # Een GPO bewaart het certificaat als registerwaarde 'Blob' in Windows' eigen formaat.
-    # Truc: lokaal importeren, dan maakt Windows die Blob zelf aan en kunnen we hem kopieren.
-    $certFile = "$env:TEMP\$thumb.cer"
-    [IO.File]::WriteAllBytes($certFile, $cert.RawData)
-    Import-Certificate -FilePath $certFile -CertStoreLocation Cert:\LocalMachine\Root | Out-Null
-    $blob = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\SystemCertificates\ROOT\Certificates\$thumb").Blob
+    # Een GPO bewaart het certificaat als registerwaarde 'Blob' in Windows' eigen formaat
+    # (een 'serialized certificate'). .NET kan dat formaat rechtstreeks maken met SerializedCert.
+    # (Vroeger: lokaal importeren en de Blob uit het register kopieren -> faalt als het
+    #  certificaat al in de Enterprise root store staat, want dan schrijft Windows niets weg.)
+    # https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.x509contenttype
+    $blob = $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::SerializedCert)
 
     # GPO aanmaken indien nodig
     if (-not (Get-GPO -Name $GpoName -ErrorAction SilentlyContinue)) {

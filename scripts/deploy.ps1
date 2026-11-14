@@ -1,15 +1,6 @@
+#!/usr/bin/env pwsh
 # Volledige omgeving uitrollen in de juiste volgorde. Uitvoeren op de HOST in de scripts map:
 #   .\deploy.ps1
-#
-# Waarom niet gewoon vagrant up?
-#   - Na de DC promotie antwoordt server1 niet tot hij herstart is (zie server1\01-adds.ps1),
-#     dus dit script wacht tot AD draait en gaat dan verder met server1.
-#   - De VMs hangen van elkaar af: server2/3 joinen het domein van server1,
-#     de client heeft DHCP van server3 nodig en de CA GPO heeft de CA op server3 nodig.
-#   - RSAT op de client (Windows Update, lang) heeft geen domein nodig,
-#     dus dat draait in de achtergrond terwijl de servers bezig zijn.
-#
-# Opnieuw uitvoeren mag: elk script past enkel aan wat nog niet juist is.
 
 $ErrorActionPreference = 'Stop' # Stoppen bij fout
 Set-Location $PSScriptRoot
@@ -58,7 +49,7 @@ do {
 Write-Step '4. server1: DNS, OUs, IIS'
 Invoke-Vagrant provision server1 --provision-with 'adds,dns,ous,iis'
 
-# 5. server2 en server3
+# 5. server2, 6. server3
 Write-Step '5. server2: basis, join, secundaire DNS, firewall'
 Invoke-Vagrant up server2 --provision
 
@@ -66,8 +57,17 @@ Write-Step '6. server3: basis, join, CA, DHCP, firewall'
 Invoke-Vagrant up server3 --provision
 
 # 7. server1: CA GPO (CA bestaat nu) + firewall als laatste
+# (HTTPS / iis-https is voor deel 2 en staat nog uit in de Vagrantfile)
 Write-Step '7. server1: CA GPO, firewall'
 Invoke-Vagrant provision server1 --provision-with 'ca-gpo,firewall'
+
+# 7b. server2 + server3: GPO meteen ophalen
+# Ze zaten al in het domein voor de GPO bestond, en vernieuwen hun policy maar om de ~90 minuten.
+# (De client joint pas hierna en krijgt de GPO bij zijn herstart.)
+Write-Step '7b. server2 + server3: gpupdate (CA GPO)'
+foreach ($vm in 'server2', 'server3') {
+    Invoke-Vagrant winrm $vm -s powershell -c 'gpupdate /target:computer /force | Out-Null; "$(hostname): root CA via GPO = $(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\SystemCertificates\Root\Certificates\*)"'
+}
 
 # 8. client: wachten op RSAT, dan domein
 Write-Step '8. client: wachten op RSAT'
@@ -75,6 +75,7 @@ $exitCode = Receive-Job (Wait-Job $rsatJob) | Select-Object -Last 1
 Remove-Job $rsatJob
 if ($exitCode -ne 0) { throw "RSAT op de client mislukt, zie $rsatLog" }
 
+# 9. client: basis + domein
 Write-Step '9. client: basis, join'
 Invoke-Vagrant provision client --provision-with 'base,join'
 
